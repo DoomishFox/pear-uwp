@@ -1,0 +1,91 @@
+﻿<Page
+    x:Class="Pear.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Pear"
+    xmlns:lib="using:PearLib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    x:DefaultBindMode="OneWay">
+    <Page.Resources>
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="AppTitleBarContainer">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <AppBarButton Icon="Refresh"
+                          LabelPosition="Collapsed"
+                          Margin="4,0"
+                          ToolTipService.ToolTip="Refresh device list"
+                          ToolTipService.Placement="Mouse"
+                          Click="{x:Bind ViewModel.RefreshDevices}"/>
+            <Border  Grid.Column="1"
+                     x:Name="AppTitleBar"
+                IsHitTestVisible="True"
+                VerticalAlignment="Stretch"
+                Background="Transparent"
+                     Height="auto">
+                <TextBlock x:Name="AppTitle"
+                Text="🍐 Pear"
+                VerticalAlignment="Center"
+                Style="{StaticResource CaptionTextBlockStyle}" />
+            </Border>
+        </Grid>
+        <Frame Grid.Row="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical" Margin="16,0,12,5">
+                    <TextBlock Text="Nearby devices"
+                           Style="{StaticResource TitleTextBlockStyle}"/>
+                    <muxc:ProgressBar IsIndeterminate="True"
+                                      Margin="0,5,0,0"
+                                      Visibility="{x:Bind ViewModel.ProgressBarVisibility}"/>
+                </StackPanel>
+                <ListView
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{x:Bind ViewModel.Devices}"
+                    SelectionMode="None"
+                    VerticalAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="lib:PearDevice">
+                            <Button HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Stretch"
+                                Height="48"
+                                Margin="0,0,0,10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="10" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{x:Bind Id, Mode=OneTime}" Grid.Column="0"
+                                               Foreground="{StaticResource SystemColorDisabledTextBrush}"/>
+                                    <TextBlock Text="{x:Bind Name, Mode=OneTime}" Grid.Column="2"/>
+                                    <Path Grid.Column="2"
+                                      Data="M 0,0 L 5,5 L 0,10"
+                                      Fill="Transparent"
+                                      Stroke="{StaticResource ApplicationForegroundThemeBrush}"
+                                      HorizontalAlignment="Right"
+                                      VerticalAlignment="Center"/>
+                                </Grid>
+                            </Button>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Frame>
+    </Grid>
+</Page>
